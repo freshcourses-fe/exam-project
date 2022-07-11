@@ -9,6 +9,7 @@ const userQueries = require('./queries/userQueries');
 const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
 
+
 module.exports.login = async (req, res, next) => {
   try {
     const foundUser = await userQueries.findUser({ email: req.body.email });
@@ -132,7 +133,7 @@ module.exports.payment = async (req, res, next) => {
         req.body.price / req.body.contests.length)
         : Math.floor(req.body.price / req.body.contests.length);
       contest = Object.assign(contest, {
-        status: index === 0 ? 'active' : 'pending',
+        status: index === 0 ? CONSTANTS.CONTEST_STATUS_ACTIVE : CONSTANTS.CONTEST_STATUS_PENDING,
         userId: req.tokenData.userId,
         priority: index + 1,
         orderId,
