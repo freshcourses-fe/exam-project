@@ -1,13 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
-const ServerError = require('../errors/ServerError');
+const { FILES_PATH } = require('../constants');
 const env = process.env.NODE_ENV || 'development';
-const devFilePath = path.resolve(__dirname, '..', '..', '..', 'public/images');
+const devFilePath = path.resolve(FILES_PATH, 'images');
 
-const filePath = env === 'production'
-  ? '/var/www/html/images/'
-  : devFilePath;
+const filePath = env === 'production' ? '/var/www/html/images/' : devFilePath;
 
 if (!fs.existsSync(filePath)) {
   fs.mkdirSync(filePath, {
@@ -24,55 +22,10 @@ const storageContestFiles = multer.diskStorage({
   },
 });
 
-const uploadAvatars = multer({ storage: storageContestFiles }).single('file');
-const uploadContestFiles = multer({ storage: storageContestFiles }).array(
-  'files', 3);
-const updateContestFile = multer({ storage: storageContestFiles }).single(
-  'file');
-const uploadLogoFiles = multer({ storage: storageContestFiles }).single(
-  'offerData');
+const multerInstance = multer({ storage: storageContestFiles });
 
-module.exports.uploadAvatar = (req, res, next) => {
-  uploadAvatars(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      next(new ServerError());
-    } else if (err) {
-      next(new ServerError());
-    }
-    return next();
-  });
-};
 
-module.exports.uploadContestFiles = (req, res, next) => {
-  uploadContestFiles(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      next(new ServerError());
-    } else if (err) {
-      next(new ServerError());
-    }
-    return next();
-  });
-};
-
-module.exports.updateContestFile = (req, res, next) => {
-  updateContestFile(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      next(new ServerError());
-    } else if (err) {
-      next(new ServerError());
-    }
-    return next();
-  });
-};
-
-module.exports.uploadLogoFiles = (req, res, next) => {
-  uploadLogoFiles(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      next(new ServerError());
-    } else if (err) {
-      next(new ServerError());
-    }
-    return next();
-  });
-};
-
+module.exports.uploadAvatars = multerInstance.single('file');
+module.exports.uploadContestFiles = multerInstance.array('files', 3);
+module.exports.updateContestFile = multerInstance.single('file');
+module.exports.uploadLogoFiles = multerInstance.single('offerData');
