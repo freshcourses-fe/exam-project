@@ -31,8 +31,8 @@ export const getCustomersContests = (data) => http.post('getCustomersContests', 
 
 export const getActiveContests = ({
   offset, limit, typeIndex, contestId, industry, awardSort, ownEntries,
-}) => http.post('getAllContests', {
-  offset, limit, typeIndex, contestId, industry, awardSort, ownEntries,
+}) => http.post(`getAllContests/${limit}/${offset}`, {
+   typeIndex, contestId, industry, awardSort, ownEntries,
 });
 
 export const getContestById = (data) => http.get('getContestById', {
