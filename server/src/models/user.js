@@ -4,19 +4,18 @@ const { Model } = require('sequelize');
 const { CUSTOMER, CREATOR, SALT_ROUNDS } = require('../constants');
 
 const hashPassword = async (user, options) => {
-  if(user.changed('password')){
+  if (user.changed('password')) {
     const hashedPassword = await bcrypt.hash(user.password, SALT_ROUNDS);
     user.password = hashedPassword;
   }
-}
+};
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+    async comparePassword (password) {
+      return bcrypt.compare(password, this.password);
+    }
+
     static associate ({ Offer, Contest, Rating }) {
       // define association here
       User.hasMany(Offer, { foreignKey: 'userId', targetKey: 'id' });
