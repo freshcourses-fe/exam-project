@@ -31,8 +31,4 @@ export const getActiveContests = ({
    typeIndex, contestId, industry, awardSort, ownEntries,
 });
 
-export const getContestById = (data) => http.get('getContestById', {
-  headers: {
-    contestId: data.contestId,
-  },
-});
+export const getContestById = (data) => http.get(`getContestById/${data.contestId}`);
