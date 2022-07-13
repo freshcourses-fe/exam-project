@@ -1,6 +1,15 @@
 'use strict';
+const bcrypt = require('bcrypt');
 const { Model } = require('sequelize');
-const { CUSTOMER, CREATOR } = require('../constants');
+const { CUSTOMER, CREATOR, SALT_ROUNDS } = require('../constants');
+
+const hashPassword = async (user, options) => {
+  if(user.changed('password')){
+    const hashedPassword = await bcrypt.hash(user.password, SALT_ROUNDS);
+    user.password = hashedPassword;
+  }
+}
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -77,5 +86,9 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+
+  User.beforeCreate(hashPassword);
+  User.beforeUpdate(hashPassword);
+
   return User;
 };
