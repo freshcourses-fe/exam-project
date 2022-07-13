@@ -52,7 +52,7 @@ router.get(
 );
 
 router.post(
-  '/getAllContests/:limit/:offset',
+  '/getAllContests',
   checkToken.checkToken,
   basicMiddlewares.onlyForCreative,
   contestController.getContests,

@@ -247,8 +247,8 @@ module.exports.getContests = (req, res, next) => {
   db.Contests.findAll({
     where: predicates.where,
     order: predicates.order,
-    limit: req.params.limit,
-    offset: req.params.offset ? req.params.offset : 0,
+    limit: req.qvery.limit,
+    offset: req.qvery.offset ? req.qvery.offset : 0,
     include: [
       {
         model: db.Offers,
