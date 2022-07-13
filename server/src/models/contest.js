@@ -1,8 +1,20 @@
+'use strict';
 const { TAGLINE_CONTEST, NAME_CONTEST, LOGO_CONTEST } = require('../constants');
-
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  const Contest = sequelize.define(
-    'Contests',
+  class Contest extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate (models) {
+      // define association here
+      Contest.belongsTo(models.User, { foreignKey: 'userId', sourceKey: 'id' });
+      Contest.hasMany(models.Offer, { foreignKey: 'contestId', targetKey: 'id' });
+    }
+  }
+  Contest.init(
     {
       id: {
         allowNull: false,
@@ -88,9 +100,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      sequelize,
+      modelName: 'Contest',
       timestamps: false,
     }
   );
-
   return Contest;
 };
