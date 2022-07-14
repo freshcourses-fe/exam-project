@@ -6,12 +6,6 @@ import CONSTANTS from '../../constants';
 import { getUserAction, clearUserStore, headerRequest } from '../../actions/actionCreator';
 
 class Header extends React.Component {
-  componentDidMount() {
-    if (!this.props.data) {
-      this.props.getUser();
-    }
-  }
-
     logOut = () => {
       localStorage.clear();
       this.props.clearUserStore();
