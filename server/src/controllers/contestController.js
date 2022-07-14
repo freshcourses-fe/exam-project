@@ -39,7 +39,7 @@ module.exports.dataForContest = async (req, res, next) => {
 module.exports.getContestById = async (req, res, next) => {
   try {
     let contestInfo = await db.Contests.findOne({
-      where: { id: req.params.contestid },
+      where: { id: req.params.contestId },
       order: [
         [Offer, 'id', 'asc'],
       ],
@@ -247,8 +247,8 @@ module.exports.getContests = (req, res, next) => {
   Contest.findAll({
     where: predicates.where,
     order: predicates.order,
-    limit: req.qvery.limit,
-    offset: req.qvery.offset ? req.qvery.offset : 0,
+    limit: req.query.limit,
+    offset: req.query.offset ? req.query.offset : 0,
     include: [
       {
         model: Offer,
