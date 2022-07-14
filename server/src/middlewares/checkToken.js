@@ -1,10 +1,15 @@
 const jwt = require('jsonwebtoken');
 const CONSTANTS = require('../constants');
 const TokenError = require('../errors/TokenError');
-const userQueries =require('../controllers/queries/userQueries');
+const userQueries = require('../controllers/queries/userQueries');
+const {
+  verifyAccessToken,
+  verifyRefreshToken,
+} = require('../services/jwtService');
+const { RefreshToken } = require('../models');
 
 module.exports.checkAuth = async (req, res, next) => {
-  const accessToken = req.headers.authorization;
+  const [, accessToken] = req.headers.authorization.split(' ');
   if (!accessToken) {
     return next(new TokenError('need token'));
   }
@@ -22,7 +27,7 @@ module.exports.checkAuth = async (req, res, next) => {
       email: foundUser.email,
     });
   } catch (err) {
-    next(new TokenError());
+    next(err);
   }
 };
 
@@ -32,9 +37,29 @@ module.exports.checkToken = async (req, res, next) => {
     return next(new TokenError('need token'));
   }
   try {
-    req.tokenData = jwt.verify(accessToken, CONSTANTS.JWT_SECRET);
+    req.tokenData = verifyAccessToken(accessToken);
     next();
   } catch (err) {
-    next(new TokenError());
+    next(err);
+  }
+};
+module.exports.checkRefreshToken = async (req, res, next) => {
+  try {
+    const {
+      body: { refreshToken },
+    } = req;
+
+    await verifyRefreshToken(refreshToken);
+
+    req.refreshTokenInstance = await RefreshToken.findOne({
+      where: {
+        token: refreshToken,
+      },
+    });
+
+    // console.log(req.refreshTokenInstance);
+    next();
+  } catch (err) {
+    next(err);
   }
 };
