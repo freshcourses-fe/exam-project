@@ -32,12 +32,12 @@ module.exports.checkAuth = async (req, res, next) => {
 };
 
 module.exports.checkToken = async (req, res, next) => {
-  const accessToken = req.headers.authorization;
+  try {
+    const [, accessToken] = req.headers.authorization.split(' ');
   if (!accessToken) {
     return next(new TokenError('need token'));
   }
-  try {
-    req.tokenData = verifyAccessToken(accessToken);
+    req.tokenData = await verifyAccessToken(accessToken);
     next();
   } catch (err) {
     next(err);
@@ -57,7 +57,6 @@ module.exports.checkRefreshToken = async (req, res, next) => {
       },
     });
 
-    // console.log(req.refreshTokenInstance);
     next();
   } catch (err) {
     next(err);
