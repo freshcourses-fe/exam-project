@@ -9,6 +9,7 @@ const controller = require('./socketInit');
 const handlerError = require('./handlerError/handler');
 const constants = require('./constants');
 const multerHandler = require('./handlerError/multerHandler');
+const tokenHandler = require('./handlerError/tokenHandler');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -17,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/public', express.static(path.join(constants.FILES_PATH)));
 app.use(router);
+app.use(tokenHandler);
 app.use(multerHandler);
 app.use(handlerError);
 
