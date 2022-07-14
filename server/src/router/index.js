@@ -10,17 +10,6 @@ const authRouter = require('./authRouter');
 const router = express.Router();
 
 router.use('/auth', authRouter);
-// router.post(
-//   '/registration',
-//   validators.validateRegistrationData,
-//   userController.registration,
-// );
-
-// router.post(
-//   '/login',
-//   validators.validateLogin,
-//   userController.login,
-// );
 
 router.post(
   '/dataForContest',
@@ -57,8 +46,6 @@ router.post(
   basicMiddlewares.onlyForCreative,
   contestController.getContests
 );
-
-router.post('/getUser', checkToken.checkAuth);
 
 router.get(
   '/downloadFile/:fileName',

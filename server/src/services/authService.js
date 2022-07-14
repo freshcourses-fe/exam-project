@@ -4,7 +4,7 @@ const { RefreshToken } = require('../models');
 module.exports.createSession = async user => {
   console.log(user);
   const tokenPair = await jwtService.generateTokenPair({
-    id: user.id,
+    userId: user.id,
     email: user.email,
     role: user.role,
   });
@@ -21,7 +21,7 @@ module.exports.refreshSession = async refreshTokenInstance => {
   const user = await refreshTokenInstance.getUser();
   console.log(user);
   const tokenPair = await jwtService.generateTokenPair({
-    id: user.id,
+    userId: user.id,
     email: user.email,
     role: user.role,
   });
