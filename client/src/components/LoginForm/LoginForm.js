@@ -13,7 +13,7 @@ class LoginForm extends React.Component {
   }
 
     clicked = (values) => {
-      this.props.loginRequest({ data: values, history: this.props.history });
+      this.props.loginRequest({ data: values });
     };
 
     render() {
