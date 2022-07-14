@@ -5,7 +5,7 @@ const {
   Rating,
   Offer,
   Contest,
-  User,
+  Transaction,
 } = require('../models');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
 const moment = require('moment');
@@ -96,6 +96,15 @@ module.exports.payment = async (req, res, next) => {
       },
       transaction
     );
+
+    const txObject = {
+      userId: req.tokenData.userId,
+      amount: req.body.price,
+      type: CONSTANTS.TRANSACTION_TYPES.EXPENSE,
+      cardNumber: req.body.number.replace(/ /g, ''),
+    };
+    await Transaction.create(txObject);
+
     const orderId = uuid();
     req.body.contests.forEach((contest, index) => {
       const prize =
@@ -185,6 +194,15 @@ module.exports.cashout = async (req, res, next) => {
       },
       transaction
     );
+
+    const txObject = {
+      userId: req.tokenData.userId,
+      amount: req.body.sum,
+      type: CONSTANTS.TRANSACTION_TYPES.INCOME,
+      cardNumber: req.body.number.replace(/ /g, ''),
+    };
+    await Transaction.create(txObject);
+
     transaction.commit();
     res.send({ balance: updatedUser.balance });
   } catch (err) {

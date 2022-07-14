@@ -1,47 +1,44 @@
 'use strict';
 const { Model } = require('sequelize');
+const {
+  TRANSACTION_TYPES: { INCOME, EXPENSE },
+} = require('../constants');
 module.exports = (sequelize, DataTypes) => {
-  class Bank extends Model {
+  class Transaction extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate ({ Transaction }) {
+    static associate ({User, Bank}) {
       // define association here
-      Bank.hasMany(Transaction, { foreignKey: 'cardNumber' });
+      Transaction.belongsTo(User, {foreignKey: 'userId'});
+      Transaction.belongsTo(Bank, {foreignKey: 'cardNumber'});
     }
   }
-  Bank.init(
+  Transaction.init(
     {
+      userId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      type: {
+        allowNull: false,
+        type: DataTypes.ENUM(INCOME, EXPENSE),
+      },
+      amount: {
+        allowNull: false,
+        type: DataTypes.NUMERIC,
+      },
       cardNumber: {
         type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true,
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      expiry: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      cvc: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      balance: {
-        type: DataTypes.DECIMAL,
-        allowNull: false,
-        defaultValue: 0,
       },
     },
     {
       sequelize,
-      modelName: 'Bank',
-      timestamps: false,
+      modelName: 'Transaction',
     }
   );
-  return Bank;
+  return Transaction;
 };
