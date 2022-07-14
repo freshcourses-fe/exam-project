@@ -2,6 +2,7 @@ import { put } from 'redux-saga/effects';
 import ACTION from '../actions/actionTypes';
 import * as ActionCreators from '../actions/actionCreator';
 import * as AuthApi from '../api/rest/auth';
+import * as restController from '../api/rest/restController';
 import { controller } from '../api/ws/socketController';
 
 export function * loginSaga (action) {
