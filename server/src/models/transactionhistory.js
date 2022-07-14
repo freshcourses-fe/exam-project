@@ -18,24 +18,24 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      type: DataTypes.INTEGER
     },
     userId: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER,
     },
     transactionTtpe: {
-      type: Sequelize.TEXT
+      type: DataTypes.TEXT
     },
     amountOfMoneyTransferred: {
-      type: Sequelize.DECIMAL
+      type: DataTypes.DECIMAL
     },
     createdAt: {
       allowNull: false,
-      type: Sequelize.DATE
+      type: DataTypes.DATE
     },
     updatedAt: {
       allowNull: false,
-      type: Sequelize.DATE
+      type: DataTypes.DATE
     }
   }, {
     sequelize,
