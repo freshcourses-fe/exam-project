@@ -38,14 +38,14 @@ router.post(
   userController.payment
 );
 
-router.post(
+router.get(
   '/getCustomersContests',
   checkToken.checkToken,
   contestController.getCustomersContests
 );
 
 router.get(
-  '/getContestById',
+  '/getContestById/:contestId',
   checkToken.checkToken,
   basicMiddlewares.canGetContest,
   contestController.getContestById
@@ -66,7 +66,7 @@ router.get(
   contestController.downloadFile
 );
 
-router.post(
+router.update(
   '/updateContest',
   checkToken.checkToken,
   upload.updateContestFile,
