@@ -5,22 +5,12 @@ const contestController = require('../controllers/contestController');
 const checkToken = require('../middlewares/checkToken');
 const validators = require('../middlewares/validators');
 const chatController = require('../controllers/chatController');
+const transactionController = require('../controllers/transactionController');
 const upload = require('../utils/fileUpload');
 const authRouter = require('./authRouter');
 const router = express.Router();
 
 router.use('/auth', authRouter);
-// router.post(
-//   '/registration',
-//   validators.validateRegistrationData,
-//   userController.registration,
-// );
-
-// router.post(
-//   '/login',
-//   validators.validateLogin,
-//   userController.login,
-// );
 
 router.post(
   '/dataForContest',
@@ -39,6 +29,13 @@ router.post(
 );
 
 router.get(
+
+  '/transactions',
+  checkToken.checkToken,
+  transactionController.getTransactions
+);
+
+router.post(
   '/getCustomersContests',
   checkToken.checkToken,
   contestController.getCustomersContests
@@ -57,8 +54,6 @@ router.post(
   basicMiddlewares.onlyForCreative,
   contestController.getContests
 );
-
-router.post('/getUser', checkToken.checkAuth);
 
 router.get(
   '/downloadFile/:fileName',

@@ -1,13 +1,15 @@
 import ACTION from '../actions/actionTypes';
 
 const initialState = {
-  isFetching: true,
+  isFetching: false,
   error: null,
   data: null,
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case ACTION.AUTH_ACTION_LOGIN:
+    case ACTION.AUTH_ACTION_REGISTER:
     case ACTION.GET_USER_REQUEST: {
       return {
         ...state,
@@ -16,6 +18,7 @@ export default function (state = initialState, action) {
         data: null,
       };
     }
+    case ACTION.AUTH_ACTION_SUCCESS:
     case ACTION.GET_USER_SUCCESS: {
       return {
         ...state,
@@ -24,6 +27,8 @@ export default function (state = initialState, action) {
         data: action.data,
       };
     }
+
+    case ACTION.AUTH_ACTION_ERROR:
     case ACTION.GET_USER_ERROR: {
       return {
         ...state,
@@ -34,9 +39,7 @@ export default function (state = initialState, action) {
     }
     case ACTION.CLEAR_USER_STORE: {
       return {
-        ...state,
-        data: null,
-        error: null,
+        ...initialState,
       };
     }
     case ACTION.UPDATE_USER_DATA_SUCCESS: {
