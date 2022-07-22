@@ -41,7 +41,7 @@ router.post(
 );
 
 router.get(
-  '/getContestById',
+  '/getContestById/:contestId',
   checkToken.checkToken,
   basicMiddlewares.canGetContest,
   contestController.getContestById
@@ -60,7 +60,7 @@ router.get(
   contestController.downloadFile
 );
 
-router.post(
+router.put(
   '/updateContest',
   checkToken.checkToken,
   upload.updateContestFile,
